@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Exe</OutputType>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <OutputType>Exe</OutputType>
     <StartupObject>Cassia.Tests.Server.Program</StartupObject>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -34,9 +34,7 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ServiceComponents\WindowsServiceHost.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="ServiceComponents\WindowsServiceHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cassia.Tests.Model\Cassia.Tests.Model.csproj" />
