@@ -156,6 +156,11 @@ namespace Cassia.Impl
             get { return _clientBuildNumber.Value; }
         }
 
+        public bool IsLocked
+        {
+            get { return GetProcesses().Any(p => p.ProcessName.Contains("logonui", StringComparison.OrdinalIgnoreCase)); }
+        }
+
         public ITerminalServer Server
         {
             get { return _server; }

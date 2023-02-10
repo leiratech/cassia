@@ -82,6 +82,8 @@ namespace Cassia
         /// </remarks>
         TimeSpan IdleTime { get; }
 
+        bool IsLocked { get; }
+
         /// <summary>
         ///     The ID of the session.
         /// </summary>
