@@ -36,6 +36,9 @@ namespace Cassia.Impl
         private readonly GroupLazyLoadedProperty<string> _userName;
         private readonly GroupLazyLoadedProperty<string> _windowStationName;
         private readonly LazyLoadedProperty<string> _workingDirectory;
+        private readonly GroupLazyLoadedProperty<WTS_SESSIONSTATE_FLAGS> _sessionFlags;
+        private readonly GroupLazyLoadedProperty<bool> _isLocked;
+
 
         public TerminalServicesSession(ITerminalServer server, int sessionId)
         {
@@ -62,7 +65,7 @@ namespace Cassia.Impl
             // I haven't observed this in practice on Windows Server 2000, 2003, or 2008, but perhaps this 
             // should be considered.
             var loader = IsVistaSp1OrHigher
-                ? (GroupPropertyLoader) LoadWtsInfoProperties
+                ? (GroupPropertyLoader)LoadWtsInfoProperties
                 : LoadWinStationInformationProperties;
             _windowStationName = new GroupLazyLoadedProperty<string>(loader);
             _connectionState = new GroupLazyLoadedProperty<ConnectionState>(loader);
@@ -75,6 +78,8 @@ namespace Cassia.Impl
             _domainName = new GroupLazyLoadedProperty<string>(loader);
             _incomingStatistics = new GroupLazyLoadedProperty<IProtocolStatistics>(loader);
             _outgoingStatistics = new GroupLazyLoadedProperty<IProtocolStatistics>(loader);
+            _sessionFlags = new GroupLazyLoadedProperty<WTS_SESSIONSTATE_FLAGS>(loader);
+            _isLocked = new GroupLazyLoadedProperty<bool>(loader);
         }
 
         public TerminalServicesSession(ITerminalServer server, WTS_SESSION_INFO sessionInfo)
@@ -82,6 +87,11 @@ namespace Cassia.Impl
         {
             _windowStationName.Value = sessionInfo.WinStationName;
             _connectionState.Value = sessionInfo.State;
+        }
+
+        public WTS_SESSIONSTATE_FLAGS SessionFlags
+        {
+            get { return _sessionFlags.Value; }
         }
 
         private static bool IsVistaSp1OrHigher
@@ -158,7 +168,7 @@ namespace Cassia.Impl
 
         public bool IsLocked
         {
-            get { return GetProcesses().Any(p => p.ProcessName.Contains("logonui", StringComparison.OrdinalIgnoreCase)); }
+            get { return _isLocked.Value; }
         }
 
         public ITerminalServer Server
@@ -298,8 +308,8 @@ namespace Cassia.Impl
             RemoteMessageBoxIcon icon, RemoteMessageBoxDefaultButton defaultButton, RemoteMessageBoxOptions options,
             TimeSpan timeout, bool synchronous)
         {
-            var timeoutSeconds = (int) timeout.TotalSeconds;
-            var style = (int) buttons | (int) icon | (int) defaultButton | (int) options;
+            var timeoutSeconds = (int)timeout.TotalSeconds;
+            var style = (int)buttons | (int)icon | (int)defaultButton | (int)options;
             // TODO: Win 2003 Server doesn't start timeout counter until user moves mouse in session.
             var result = NativeMethodsHelper.SendMessage(_server.Handle, _sessionId, caption, text, style,
                 timeoutSeconds, synchronous);
@@ -311,14 +321,14 @@ namespace Cassia.Impl
         public IList<ITerminalServicesProcess> GetProcesses()
         {
             var allProcesses = _server.GetProcesses();
-            var results = new List<ITerminalServicesProcess>();
-            foreach (var process in allProcesses)
-            {
-                if (process.SessionId == _sessionId)
-                {
-                    results.Add(process);
-                }
-            }
+            var results = new List<ITerminalServicesProcess>(allProcesses.Where(p => p.SessionId == _sessionId));
+            //foreach (var process in allProcesses)
+            //{
+            //    if (process.SessionId == _sessionId)
+            //    {
+            //        results.Add(process);
+            //    }
+            //}
             return results;
         }
 
@@ -387,21 +397,41 @@ namespace Cassia.Impl
 
         private void LoadWtsInfoProperties()
         {
-            var info = NativeMethodsHelper.QuerySessionInformationForStruct<WTSINFO>(_server.Handle, _sessionId,
-                WTS_INFO_CLASS.WTSSessionInfo);
-            _connectionState.Value = info.State;
+            var infoParent = NativeMethodsHelper.QuerySessionInformationForStruct<WTSINFOEX>(_server.Handle, _sessionId,
+                WTS_INFO_CLASS.WTSSessionInfoEx);
+            var info = infoParent.Data.WTSINFOEX_LEVEL1_W;
+            if (info.SessionId != (ulong)_sessionId)
+            {
+
+            }
+            _sessionFlags.Value = info.SessionFlags;
+            _isLocked.Value = info.SessionFlags == WTS_SESSIONSTATE_FLAGS.WTS_SESSIONSTATE_LOCK || info.SessionFlags == WTS_SESSIONSTATE_FLAGS.WTS_SESSIONSTATE_UNKNOWN;
+
+            _connectionState.Value = info.SessionState;
             _incomingStatistics.Value = new ProtocolStatistics(info.IncomingBytes, info.IncomingFrames,
                 info.IncomingCompressedBytes);
             _outgoingStatistics.Value = new ProtocolStatistics(info.OutgoingBytes, info.OutgoingFrames,
                 info.OutgoingCompressedBytes);
             _windowStationName.Value = info.WinStationName;
-            _domainName.Value = info.Domain;
+            _domainName.Value = info.DomainName;
             _userName.Value = info.UserName;
+
+
             _connectTime.Value = NativeMethodsHelper.FileTimeToDateTime(info.ConnectTime);
             _disconnectTime.Value = NativeMethodsHelper.FileTimeToDateTime(info.DisconnectTime);
             _lastInputTime.Value = NativeMethodsHelper.FileTimeToDateTime(info.LastInputTime);
             _loginTime.Value = NativeMethodsHelper.FileTimeToDateTime(info.LogonTime);
             _currentTime.Value = NativeMethodsHelper.FileTimeToDateTime(info.CurrentTime);
+
+
+            //if (_connectionState.Value == ConnectionState.Active)
+            //Console.WriteLine(info.SessionFlags.ToString());
+            //Console.WriteLine($"{_userName.Value} - {_lastInputTime.Value}");
+            //Console.WriteLine($"SessionId : {infoParent.Data.WTSInfoExLevel1.SessionId}");
+            //Console.WriteLine($"Level : {infoParent.Level}");
+            //Console.WriteLine($"Flags : {info.SessionFlags}");
+            //Console.WriteLine($"----------------------------");
+
         }
 
         private string GetClientName()

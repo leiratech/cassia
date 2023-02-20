@@ -27,7 +27,7 @@ namespace Cassia.Impl
         {
             int returned;
             IntPtr mem;
-            if (NativeMethods.WTSQuerySessionInformation(server.Handle, sessionId, infoClass, out mem, out returned))
+            if (NativeMethods.WTSQuerySessionInformationW(server.Handle, sessionId, infoClass, out mem, out returned))
             {
                 try
                 {

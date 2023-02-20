@@ -1,3 +1,4 @@
+using Cassia.Impl;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -89,6 +90,7 @@ namespace Cassia
         /// </summary>
         int SessionId { get; }
 
+        WTS_SESSIONSTATE_FLAGS SessionFlags { get; }
         /// <summary>
         ///     The name of the user account that last connected to the session.
         /// </summary>

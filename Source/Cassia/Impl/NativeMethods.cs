@@ -10,7 +10,7 @@ namespace Cassia.Impl
         public static readonly IntPtr LocalServerHandle = IntPtr.Zero;
 
         [DllImport("Wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool WTSQuerySessionInformation(IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass,
+        public static extern bool WTSQuerySessionInformationW(IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass,
                                                              out IntPtr buffer, out int bytesReturned);
 
         [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]

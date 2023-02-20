@@ -5,8 +5,10 @@ namespace Cassia.Impl
     [StructLayout(LayoutKind.Sequential)]
     public struct WTSINFOEX
     {
-        public int Level;
+        [MarshalAs(UnmanagedType.U4)]
+        public uint Level;
         public int Unknown;
-        public WTSINFOEX_LEVEL1 Data;
+        public WTSINFOEX_LEVEL Data;
     }
+
 }

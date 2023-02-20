@@ -3,7 +3,7 @@ namespace Cassia
     /// <summary>
     /// Connection state of a session.
     /// </summary>
-    public enum ConnectionState
+    public enum ConnectionState 
     {
         /// <summary>
         /// A user is logged on to the session.
