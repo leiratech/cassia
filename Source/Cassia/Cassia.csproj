@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <Nullable>enable</Nullable>
-	  <TargetFramework>net7.0</TargetFramework>
-	  <OutputType>Library</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
     <Company>Cassia Developers</Company>
     <Authors>Cassia Developers</Authors>
     <Product>Cassia: .NET Remote Desktop Services Library</Product>
@@ -29,7 +29,4 @@
     <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
-  </ItemGroup>
 </Project>
