@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Library</OutputType>
     <Company>Cassia Developers</Company>
     <Authors>Cassia Developers</Authors>
@@ -29,8 +29,8 @@
     <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<DebugSymbols>False</DebugSymbols>
-		<DebugType>None</DebugType>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
 </Project>
