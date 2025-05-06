@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/danports/cassia.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>TerminalServices;RemoteDesktop</PackageTags>
-    <AssemblyName>Lockfy.$(MSBuildProjectName)</AssemblyName>
+    <AssemblyName>Lockfy.Agent.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Lockfy.Agent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\Bin\</OutputPath>
