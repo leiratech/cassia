@@ -18,8 +18,14 @@
     <PackageTags>TerminalServices;RemoteDesktop</PackageTags>
     <AssemblyName>Lockfy.Agent.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>Lockfy.Agent.$(MSBuildProjectName)</RootNamespace>
+    <Configurations>Debug;Release;LocalDebug</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LocalDebug|AnyCPU'">
     <OutputPath>..\..\Bin\</OutputPath>
     <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
