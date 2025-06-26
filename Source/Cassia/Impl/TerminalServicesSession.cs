@@ -168,7 +168,18 @@ namespace Cassia.Impl
 
         public bool IsLocked
         {
-            get { return _isLocked.Value; }
+            //get { return _isLocked.Value; }
+            get
+            {
+                if (WindowStationName.Equals("Console", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return _isLocked.Value;
+                }
+                else
+                {
+                    return _isLocked.Value || (_connectionState.Value != ConnectionState.Connected && _connectionState.Value != ConnectionState.Active);
+                }
+            }
         }
 
         public ITerminalServer Server
