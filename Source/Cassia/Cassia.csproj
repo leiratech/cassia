@@ -21,19 +21,11 @@
     <Configurations>Debug;Release;LocalDebug</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LocalDebug|AnyCPU'">
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DocumentationFile>..\..\Bin\Cassia.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
