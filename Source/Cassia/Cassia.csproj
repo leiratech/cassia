@@ -32,4 +32,9 @@
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <None Update="third-party-notices-Lockfy.Agent.Cassia.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
